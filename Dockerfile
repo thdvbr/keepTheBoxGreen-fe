@@ -21,7 +21,7 @@ WORKDIR /app
 # Cache and Install dependencies
 COPY package.json .
 COPY yarn.lock .
-RUN yarn install --production
+RUN yarn install --prod
 # Copy app files
 COPY . .
 # Build the app
