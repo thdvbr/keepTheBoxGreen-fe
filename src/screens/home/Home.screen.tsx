@@ -34,7 +34,7 @@ const Home = () => {
             <div>humidity: {telemetryItem.humidity}</div>
             <div>dust concentration: {telemetryItem.dustConcentration}</div>
             <br />
-          <div/>
+          </div>
         ))}
     </div>
   );
