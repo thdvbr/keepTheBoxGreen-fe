@@ -22,14 +22,19 @@ const Home = () => {
     <div className='App'>
       {telemetryData &&
         telemetryData.map((telemetryItem: TelemetryItemProps) => (
-          <>
-            <div>date: {telemetryItem.eventTimestamp}</div>
+          <div key={telemetryItem.id}>
+            <div>
+              date: {telemetryItem.EventEnqueuedUtcTime.substring(0, 10)}
+            </div>
+            <div>
+              time: {telemetryItem.EventEnqueuedUtcTime.substring(11, 19)}
+            </div>
             <div>sitting time: {telemetryItem.sittingTime}</div>
             <div>temperature: {telemetryItem.temperature}</div>
             <div>humidity: {telemetryItem.humidity}</div>
             <div>dust concentration: {telemetryItem.dustConcentration}</div>
             <br />
-          </>
+          <div/>
         ))}
     </div>
   );
