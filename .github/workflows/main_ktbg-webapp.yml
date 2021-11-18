@@ -82,7 +82,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'ktbg-webapp(staging)'
+          app-name: 'ktbg-webapp'
           slot-name: 'staging'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_222f3aca6dc14f72944ad281da68dab9 }}
           images: 'keeptheboxgreenweb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_5f278b8dd2c841c78df36b02c69551eb }}/keeptheboxgreenweb/app-prod:${{ github.sha }}'
