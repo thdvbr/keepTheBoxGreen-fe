@@ -58,14 +58,14 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: https://keeptheboxgreenweb.azurecr.io/
-          username: ${{ secrets.AzureAppService_ContainerUsername_7ca986fb8d2540619df8e069685a5977 }}
-          password: ${{ secrets.AzureAppService_ContainerPassword_59137674109b4e748ed5705e4ae4cc88 }}
+          username: ${{ secrets.AzureAppService_ContainerUsername_5f278b8dd2c841c78df36b02c69551eb }}
+          password: ${{ secrets.AzureAppService_ContainerPassword_73bcfb9dd3184876943ff267dab84110 }}
 
       - name: Build and push container image to registry
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: keeptheboxgreenweb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_7ca986fb8d2540619df8e069685a5977 }}/app-prod:${{ github.sha }}
+          tags: keeptheboxgreenweb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_5f278b8dd2c841c78df36b02c69551eb }}/keeptheboxgreenweb/app-prod:${{ github.sha }}
           file: ./Dockerfile
 
   deployStaging:
@@ -78,11 +78,6 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: 'Login via Azure CLI'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
