@@ -90,7 +90,7 @@ jobs:
   deployProduction:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    needs: [depolyStaging]
+    needs: [deployStaging]
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
