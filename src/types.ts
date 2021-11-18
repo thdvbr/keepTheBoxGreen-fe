@@ -3,10 +3,10 @@ export interface TelemetryItemProps {
   id: string;
   connectionDeviceId: string;
   connectionDeviceGenerationId: string;
-  enqueuedTimeUTC: string;
+  EventEnqueuedUtcTime: string;
+  EventProcessedUtcTime: string;
   temperature: number;
   humidity: number;
-  eventTimestamp: Date;
   sittingTime: number;
   dustConcentration: number;
 }
