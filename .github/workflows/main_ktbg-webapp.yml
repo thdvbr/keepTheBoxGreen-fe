@@ -103,4 +103,4 @@ jobs:
           app-name: 'ktbg-webapp'
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_979bb23d3e164b5e9b2f22bfcd202282 }}
-          images: 'keeptheboxgreenweb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_7ca986fb8d2540619df8e069685a5977 }}/app-prod:${{ github.sha }}'
+          images: 'keeptheboxgreenweb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_7ca986fb8d2540619df8e069685a5977 }}/keeptheboxgreenweb/app-prod:${{ github.sha }}'
