@@ -108,3 +108,22 @@ jobs:
           slot-name: 'production'
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_979bb23d3e164b5e9b2f22bfcd202282 }}
           images: 'keeptheboxgreenweb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_7ca986fb8d2540619df8e069685a5977 }}/keeptheboxgreenweb/app-prod:${{ github.sha }}'
+      - name: Notify slack success
+        if: success()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: Discontract/github-action-slack-notify-deployment@v1
+        with:
+          channel: deployments
+          status: SUCCESS
+          color: good
+
+      - name: Notify slack fail
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: Discontract/github-action-slack-notify-deployment@v1
+        with:
+          channel: deployments
+          status: FAILED
+          color: danger
