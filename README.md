@@ -60,7 +60,38 @@ We went with Github Actions for setting up the automated workflow. Since we use 
 CI:
 
 - Build(install dependencies, lint, unit testing)
-- Sonar Cloud Analysis (Scan security vulnerability, code smell)
+- Sonar Cloud Analysis (Scan security vulnerabilities, code smell)
 
-CD process only runs on the main branch.
-Docker build is processed only when unit testing and sonarcloud scan has been approved
+CD:
+
+- Docker(Build Image, tag image and push to azure container registry)
+- Deploy to staging environment
+- Deploy to production environment (manual)
+
+#### Blue-Green Deployment
+
+For continuous deployment, we take the blue-green deployment approach. In staging environment(blue) when we finish QA testing and once the software is good to go, we can switch the router so all incoming requests go to the blue environment from green environment(production). This way we can minimize the downtime during deployment. On Azure app service, you can easily add deployment slots. Through this service we cloned the existing application and assigned it to staging slot.
+
+![blue-green-deployment](assets/deployment-slots.png)
+
+Azure app service enables swap operation of two environments easily.
+
+![swap](assets/swap.png)
+
+#### Workflow on Pull Request
+
+![workflow-pr](assets/pr-workflow.png)
+
+When pull request happens, only CI process runs (build, lint, testing, sonarcloud scan) and skips the CD steps on the pipeline. We decided not to deploy pull requests since it might get expensive when there are many pull requests at the same time.
+
+#### Workflow on Push to Main Branch
+
+![workflow-main](assets/review-deployment.png)
+
+When commits are pushed to the main branch the entire CI/CD process runs. CD process only runs on the main branch. Docker build is processed only when unit testing and sonarcloud scan has been approved.
+
+Deployment to production is protected, and has to be manually triggered. The workflow automatically requests review to the assigned member once the deployment on staging environment has been completed.
+
+#### Slack Notification on Deployment to Production
+
+![slack](assets/slack.png)
