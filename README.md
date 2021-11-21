@@ -1,3 +1,13 @@
+### Table of Contents
+
+- [Project Description](#project-description)
+- [Project Status and Upcoming Features](#project-status-and-upcoming-features)
+- [Deployment](#deployment)
+- [Installation](#installation)
+- [Docker](#docker)
+- [Cloud Infrastructure](#cloud-infrastructure)
+- [Continuous Integration and Continuous Deployment](#continuous-integration-and-continuous-deployment)
+
 ### Project Description
 
 KeepTheBoxGreen project introduces the implementation of the Arduino device, which collects data from various sensors such as ultrasonic sensor, humidity/temperature sensor, and dust sensor.
@@ -53,11 +63,6 @@ yarn dev
 ```
 
 yarn build
-
-```
-
-```
-
 yarn start
 
 ```
@@ -76,15 +81,8 @@ You can see that the image size has reduced from 672mb to 22mb through optimizat
 
 #### To Run Production Docker Container
 
-1. Build
-
 ```
 docker-compose -f docker-compose.prod.yml build
-```
-
-2. Run
-
-```
 docker run -p 80:80 --name <name> app-prod
 ```
 
@@ -96,7 +94,7 @@ We chose Microsoft Azure as our cloud service provider for this project.
 
 ![cloud-infra](assets/cloud-infra.png)
 
-For the deployment of the web app we used Azure App Services, which is the most popular and widely used fully managed Platform as a Service(Paas). Azure App Services has high scalability, security, and covers all the compliance requirements along with supporting high performance by auto scaling of services. We chose App Services since we don't need full control and to focus on speedy deployment of our application.
+For the deployment of the web app we used Azure App Services, which is the most popular and widely used fully managed Platform as a Service(PaaS). Azure App Services has high scalability, security, and covers all the compliance requirements along with supporting high performance by auto scaling of services. We chose App Services over hosting via virtual machines since we don't need full control and wanted to take advantage on easy deployment and built-in security of PaaS.
 
 #### Detailed Architecture Diagram for the #keepTheBoxGreen Web App:
 
@@ -106,7 +104,7 @@ For the deployment of the web app we used Azure App Services, which is the most 
 
 ![cloud-resources](assets/cloud-resources.png)
 
-The site is hosted in App Services and it is running under an App Service Plan. Docker image of the web app has been uploaded to Azure Container Registry, and App Service retrieves the image from the registry and configured for continuous deployment with github actions workflow. We used two deployment slots on App Service, one for staging environment and one for production.
+The site is hosted in App Services and it is running under an App Service Plan. Docker image of the web app has been uploaded to Azure Container Registry, and App Service retrieves the image from the registry and configured for continuous deployment with github actions workflow. We used two deployment slots on App Service, one for staging environment and one for production. These assets are called resources and they are stored in the resource group thats located in west europe.
 
 ### Continuous Integration and Continuous Deployment
 
@@ -131,7 +129,7 @@ CD:
 
 #### Blue-Green Deployment
 
-For continuous deployment, we take the blue-green deployment approach. In staging environment(blue) when we finish QA testing and once the software is good to go, we can switch the router so all incoming requests go to the blue environment from green environment(production). This way we can minimize the downtime during deployment. Azure App Services provides way to add deployment slots. Through this service we cloned the existing application and assigned it to staging slot. Swap operation of two environments on Azure is straight forward.
+For continuous deployment, we take the blue-green deployment approach. In staging environment(blue) when we finish QA testing and once the software is good to go, we can switch the router so all incoming requests go to the blue environment from green environment(production). This way we can minimize the downtime during deployment. Azure App Services provides way to add deployment slots for adding staging environment. Through this service we cloned the existing application and assigned it to staging slot. Swap operation of two environments on Azure is straight forward.
 
 ![blue-green-deployment](assets/deployment-slots.png)
 
