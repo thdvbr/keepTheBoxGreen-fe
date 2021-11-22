@@ -73,7 +73,7 @@ yarn start
 
 #### Builder Pattern with Multistage Builds
 
-To optimize the image build process we implemented builder pattern and split the build process into multiple stages. We used multistage builds in a single Dockerfile to define different stages of build. In the build stage, we copy the source code, install dependencies and create build artifacts upon all the necessary build utilities available. In the run stage, we copy the built binaries in another smaller image and deploy it which results in the size reduction. This process reduces any unnecessary assets (like tooling, dev dependencies, runtime or compiler) getting shipped to production and also affects the deployment hugely. Smaller docker containers can push and pull faster from the container registry, which means higher deployment speed - better performance. They are also cost effective and secure, since they have less attack surface for vulnerabilities.
+To optimize the image build process we implemented builder pattern and split the build process into multiple stages. We used multistage builds in a single Dockerfile to define different stages of build. In the build stage, we copy the source code, install dependencies and create build artifacts upon all the necessary build utilities available. In the run stage, we copy the built binaries in another smaller image and deploy it which results in the size reduction. This process reduces any unnecessary assets getting shipped to production and also affects the deployment hugely. Smaller docker containers can push and pull faster from the container registry, which means higher deployment speed - better performance. They are also cost effective and secure, since they have less attack surface for vulnerabilities.
 
 You can see that the image size has reduced from 672mb to 22mb through optimization of build process.
 ![dev-image](assets/dev-image.png)
@@ -104,7 +104,7 @@ For the deployment of the web app we used Azure App Services, which is the most 
 
 ![cloud-resources](assets/cloud-resources.png)
 
-The site is hosted in App Services and it is running under an App Service Plan. Docker image of the web app has been uploaded to Azure Container Registry, and App Service retrieves the image from the registry and configured for continuous deployment with github actions workflow. We used two deployment slots on App Service, one for staging environment and one for production. These assets are called resources and they are stored in the resource group thats located in west europe.
+The site is hosted in App Services and it is running under an App Service Plan. Docker image of the web app has been uploaded to Azure Container Registry. App Service retrieves the image from the registry and is configured for continuous deployment with github actions workflow. We used two deployment slots on App Service, one for staging environment and one for production. These assets are called resources and they are stored in the resource group thats located in west europe.
 
 ### Continuous Integration and Continuous Deployment
 
