@@ -5,6 +5,8 @@ import appApiClient from '../../api/appApiClient';
 import { TelemetryItemProps, ResponseTelemetryDataProps } from '../../types';
 import '../../App.css';
 
+import Container from '../../components/container';
+
 const Home = () => {
   const [telemetryData, setTelemetryData] = useState<TelemetryItemProps>([]);
   const fetchData = async () => {
@@ -42,6 +44,7 @@ const Home = () => {
               </div>
             )
         )}
+      <Container />
     </div>
   );
 };
