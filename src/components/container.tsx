@@ -23,9 +23,7 @@ export default function Container() {
           <Center h='40px' bg='green.600' borderRadius='10px'>
             some title
           </Center>
-          <Box h='50vh' bg='green.400' borderRadius='10px'>
-            <P5Box />
-          </Box>
+          <P5Box />
         </VStack>
       </Center>
     </Box>

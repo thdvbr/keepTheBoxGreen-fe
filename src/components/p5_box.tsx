@@ -2,34 +2,38 @@
 
 import React from 'react';
 import { Box, Center, Text } from '@chakra-ui/react';
-import Sketch from 'react-p5';
+import { ReactP5Wrapper } from "react-p5-wrapper";
 
-export default function P5Box(props) {
+
+function sketch(p5) {
   let x = 200;
   const y = 200;
   const width = window.innerWidth / 1.05;
-  const height = window.innerHeight / 2;
-  //@ts-ignore
-  const setup = (p5, canvasParentRef) => {
-    // use parent to render the canvas in this ref
-    // (without that p5 will render the canvas outside of your component)
-    p5.createCanvas(width, height).parent(canvasParentRef);
+  const height = window.innerHeight / 2.2;
+
+  p5.setup = () => {
+    p5.createCanvas(width, height, p5.WEBGL);
+  }
+  p5.draw = () => {
+    p5.background("#38A169");
+    p5.normalMaterial();
+    p5.push();
+    p5.rotateZ(p5.frameCount * 0.01);
+    p5.rotateX(p5.frameCount * 0.01);
+    p5.rotateY(p5.frameCount * 0.01);
+    p5.plane(100);
+    p5.pop();
   };
 
-  const draw = (p5) => {
-    p5.background(0);
-    p5.ellipse(x, y, 50, 50);
-    // NOTE: Do not use setState in the draw function or in functions that are executed
-    // in the draw function...
-    // please use normal variables or class properties for these purposes
-    x = x + 0.25;
-  };
+}
+
+export default function P5Box() {
   return (
     <>
       <Box>some graphics</Box>
       <Box w='600' h='300px'>
         <Center borderRadius='10px'>
-          <Sketch setup={setup} draw={draw} />
+          <ReactP5Wrapper sketch={sketch} />
         </Center>
       </Box>
     </>
