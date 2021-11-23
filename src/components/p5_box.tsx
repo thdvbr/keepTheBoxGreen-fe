@@ -1,6 +1,5 @@
 //@ts-nocheck
 
-import React from 'react';
 import { Box, Center, Text } from '@chakra-ui/react';
 import { ReactP5Wrapper } from "react-p5-wrapper";
 
@@ -30,8 +29,8 @@ function sketch(p5) {
 export default function P5Box() {
   return (
     <>
-      <Box>some graphics</Box>
-      <Box w='600' h='300px'>
+      <Box>some small title</Box>
+      <Box>
         <Center borderRadius='10px'>
           <ReactP5Wrapper sketch={sketch} />
         </Center>

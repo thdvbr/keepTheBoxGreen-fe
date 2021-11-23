@@ -1,3 +1,7 @@
 .App {
   text-align: center;
 }
+
+#defaultCanvas0 {
+  border-radius: 10px !important;
+}
