@@ -34,7 +34,9 @@ The features that will be implemented soon in the future include:
 The web app is containerized and running on Azure App Services.
 
 - [Production environment](https://ktbg-webapp.azurewebsites.net/) of #keepTheBoxGreen web app
+  ![app-running](assets/app-running.png)
 - [Staging environment](https://ktbg-webapp-staging.azurewebsites.net/) of #keepTheBoxGreen web app
+  ![app-running](assets/app-running-staging.png)
 
 ### Installation
 
