@@ -5,10 +5,12 @@ import { ReactP5Wrapper } from "react-p5-wrapper";
 
 
 function sketch(p5) {
-  let x = 200;
-  const y = 200;
   const width = window.innerWidth / 1.05;
   const height = window.innerHeight / 2.2;
+
+  const random = (max) => {
+    return Math.floor(Math.random() * max);
+  }
 
   p5.setup = () => {
     p5.createCanvas(width, height, p5.WEBGL);
@@ -21,7 +23,6 @@ function sketch(p5) {
     p5.rotateX(p5.frameCount * 0.01);
     p5.rotateY(p5.frameCount * 0.01);
     p5.plane(100);
-    p5.pop();
   };
 
 }
