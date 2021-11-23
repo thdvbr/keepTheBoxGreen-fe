@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Center, Text, VStack, StackDivider } from '@chakra-ui/react';
+import { Box, Center, VStack, StackDivider } from '@chakra-ui/react';
 
 import P5Box from './p5_box';
 
