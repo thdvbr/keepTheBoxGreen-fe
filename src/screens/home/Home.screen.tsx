@@ -7,7 +7,7 @@ import '../../App.css';
 import { Rnd } from "react-rnd";
 import Container from '../../components/container';
 import {
-  Box, Button, Tabs, TabList, TabPanels, Tab, TabPanel, Text,
+  Box, Button, Tabs, TabList, TabPanels, Tab, TabPanel, Text, Center,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -60,69 +60,75 @@ const Home = () => {
   const toggle = () => setIsOpen(!isOpen);
 
   return (
-    <div className='App'>
-      <Box align="right">
-        <Button size="sm" onClick={toggle} sx={{ zIndex: 2 }} borderRadius="25px">
-          ⚙️
-        </Button>
-      </Box>
+    <div className='App' style={{ width: "100vw", height: "100vh" }}>
+      <div className='dragZone' style={{ width: "100vw", height: "100vh" }}>
+        <Box align="right">
+          <Button m='3' size="xs" onClick={toggle} sx={{ zIndex: 2 }} borderRadius="25px">
+            {isOpen ? "Close Tab" : "Open Tab"}
+          </Button>
+        </Box>
 
-      {isOpen &&
-        <Rnd
-          style={style}
-          default={{
-            x: Math.floor(Math.random() * window.innerWidth) / 2,
-            y: Math.floor(Math.random() * window.innerHeight) / 2,
-            width: window.innerWidth / 2,
-            height: window.innerHeight / 2,
-            minWidth: 300,
-            minHeight: 300,
-          }}
-        >
-          <Box w="100%">
-            <Tabs>
-              <TabList>
-                <Tab>Current Data</Tab>
-                <Tab>Mockup Data</Tab>
-              </TabList>
-
-              <TabPanels>
-                {/* current data */}
-                <TabPanel>
-                  {telemetryData.map(
-                    (telemetryItem: TelemetryItemProps, index, array) =>
-                      array.length - 1 === index && (
-                        <div key={index}>
-                          <div>
-                            date: {telemetryItem.EventEnqueuedUtcTime.substring(0, 10)}
+        {isOpen &&
+          <Rnd
+            style={style}
+            default={{
+              x: Math.floor(Math.random() * window.innerWidth) / 2,
+              y: Math.floor(Math.random() * window.innerHeight) / 2,
+              width: window.innerWidth / 2,
+              height: window.innerHeight / 2,
+            }}
+            minWidth={300}
+            minHeight={300}
+            bounds={".dragZone"}
+          >
+            <Box w="100%">
+              <Tabs size='sm'>
+                <TabList>
+                  <Tab>Current Data</Tab>
+                  <Tab>Mockup Data</Tab>
+                  <Tab>About</Tab>
+                </TabList>
+                <TabPanels>
+                  {/* current data */}
+                  <TabPanel>
+                    {telemetryData.map(
+                      (telemetryItem: TelemetryItemProps, index, array) =>
+                        array.length - 1 === index && (
+                          <div key={index}>
+                            <div>
+                              date: {telemetryItem.EventEnqueuedUtcTime.substring(0, 10)}
+                            </div>
+                            <div>
+                              time: {telemetryItem.EventEnqueuedUtcTime.substring(11, 19)}
+                            </div>
+                            <div>sitting time: {telemetryItem.sittingTime}</div>
+                            <div>temperature: {telemetryItem.temperature}</div>
+                            <div>humidity: {telemetryItem.humidity}</div>
+                            <div>dust concentration: {telemetryItem.dustConcentration}</div>
+                            <br />
                           </div>
-                          <div>
-                            time: {telemetryItem.EventEnqueuedUtcTime.substring(11, 19)}
-                          </div>
-                          <div>sitting time: {telemetryItem.sittingTime}</div>
-                          <div>temperature: {telemetryItem.temperature}</div>
-                          <div>humidity: {telemetryItem.humidity}</div>
-                          <div>dust concentration: {telemetryItem.dustConcentration}</div>
-                          <br />
-                        </div>
-                      ))}
-                </TabPanel>
-                <TabPanel>
-                  <p>some mock up data</p>
-                  <Slider aria-label="slider-ex-1" defaultValue={30}>
-                    <SliderTrack>
-                      <SliderFilledTrack />
-                    </SliderTrack>
-                    <SliderThumb />
-                  </Slider>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </Box>
-        </Rnd>
-      }
+                        ))}
+                  </TabPanel>
+                  <TabPanel>
+                    <p>some mock up data</p>
+                    <Slider aria-label="slider-ex-1" defaultValue={30}>
+                      <SliderTrack>
+                        <SliderFilledTrack />
+                      </SliderTrack>
+                      <SliderThumb />
+                    </Slider>
+                  </TabPanel>
+                  <TabPanel>
+                    <p>okja is cute dog</p>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Box>
+          </Rnd>
+        }
 
-      <Container />
+        <Container />
+      </div>
     </div >
   );
 };
