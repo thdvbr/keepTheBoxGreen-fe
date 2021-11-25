@@ -18,6 +18,14 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
 } from "@chakra-ui/react";
 
 const Home = () => {
@@ -66,7 +74,7 @@ const Home = () => {
       <div className="dragZone" style={{ width: "100vw", height: "100vh" }}>
         <Box align="right">
           <Button
-            m="4"
+            m="5"
             size="xs"
             onClick={toggle}
             sx={{ zIndex: 2 }}
@@ -109,7 +117,52 @@ const Home = () => {
                       (telemetryItem: TelemetryItemProps, index, array) =>
                         array.length - 1 === index && (
                           <div key={index}>
-                            <div>
+                            <Table size='xs' variant='striped'>
+                              <TableCaption placement='bottom'>Data from Azure</TableCaption>
+                              <Thead>
+                                <Tr>
+                                  <Th>Name</Th>
+                                  <Th>Value</Th>
+                                </Tr>
+                              </Thead>
+                              <Tbody>
+
+                                <Tr>
+                                  <Td>Date</Td>
+                                  <Td>{telemetryItem.EventEnqueuedUtcTime.substring(
+                                    0,
+                                    10
+                                  )}</Td>
+                                </Tr>
+
+                                <Tr>
+                                  <Td>Time</Td>
+                                  <Td>{telemetryItem.EventEnqueuedUtcTime.substring(11, 19)}</Td>
+                                </Tr>
+
+                                <Tr>
+                                  <Td>Sitting Time</Td>
+                                  <Td>{telemetryItem.sittingTime}</Td>
+                                </Tr>
+
+                                <Tr>
+                                  <Td>Temperature</Td>
+                                  <Td>{telemetryItem.temperature}°</Td>
+                                </Tr>
+
+                                <Tr>
+                                  <Td>Humidity</Td>
+                                  <Td>{telemetryItem.humidity}%</Td>
+                                </Tr>
+
+                                <Tr>
+                                  <Td>Dust Contentration</Td>
+                                  <Td>{telemetryItem.dustConcentration}μg/㎥</Td>
+                                </Tr>
+
+                              </Tbody>
+                            </Table>
+                            {/* <div>
                               date:{" "}
                               {telemetryItem.EventEnqueuedUtcTime.substring(
                                 0,
@@ -117,11 +170,7 @@ const Home = () => {
                               )}
                             </div>
                             <div>
-                              time:{" "}
-                              {telemetryItem.EventEnqueuedUtcTime.substring(
-                                11,
-                                19
-                              )}
+                              time:{telemetryItem.EventEnqueuedUtcTime.substring(11, 19)}
                             </div>
                             <div>sitting time: {telemetryItem.sittingTime}</div>
                             <div>temperature: {telemetryItem.temperature}</div>
@@ -130,25 +179,27 @@ const Home = () => {
                               dust concentration:{" "}
                               {telemetryItem.dustConcentration}
                             </div>
-                            <br />
+                            <br /> */}
                           </div>
                         )
                     )}
                   </TabPanel>
                   <TabPanel>
-                    <p>some mock up data</p>
-                    <Slider
-                      aria-label="slider-ex-1"
-                      defaultValue={30}
-                      onChange={(value) => {
-                        setValues([{ humidityHeight: value / 100 }]);
-                      }}
-                    >
-                      <SliderTrack>
-                        <SliderFilledTrack />
-                      </SliderTrack>
-                      <SliderThumb />
-                    </Slider>
+                    <Box>
+                      <p>humidity: </p>
+                      <Slider
+                        aria-label="slider-ex-1"
+                        defaultValue={30}
+                        onChange={(value) => {
+                          setValues([{ humidityHeight: value / 100 + 0.35 }]);
+                        }}
+                      >
+                        <SliderTrack>
+                          <SliderFilledTrack />
+                        </SliderTrack>
+                        <SliderThumb />
+                      </Slider>
+                    </Box>
                   </TabPanel>
                   <TabPanel>
                     <p>okja is cute dog</p>
