@@ -1,38 +1,30 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import React, { useState, useEffect } from 'react';
-import appApiClient from '../../api/appApiClient';
-import { TelemetryItemProps, ResponseTelemetryDataProps } from '../../types';
-import '../../App.css';
+import React, { useState, useEffect } from "react";
+import appApiClient from "../../api/appApiClient";
+import { TelemetryItemProps, ResponseTelemetryDataProps } from "../../types";
+import "../../App.css";
 import { Rnd } from "react-rnd";
-import Container from '../../components/container';
+import Container from "../../components/container";
 import {
-  Box, Button, Tabs, TabList, TabPanels, Tab, TabPanel, Text, Center,
+  Box,
+  Button,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
   Slider,
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
 
 const Home = () => {
-  const [telemetryData, setTelemetryData] = useState<TelemetryItemProps>([
-    {
-      find: "find",
-      id: "okja",
-      connectionDeviceId: "deviceId",
-      connectionDeviceGenerationId: "generation Id",
-      EventEnqueuedUtcTime: "11:15",
-      EventProcessedUtcTime: "12:20",
-      temperature: 23,
-      humidity: 48,
-      sittingTime: 61,
-      dustConcentration: 120,
-    }
-  ]
-  );
+  const [telemetryData, setTelemetryData] = useState<TelemetryItemProps>([]);
   const fetchData = async () => {
     try {
-      const response = await appApiClient.get<ResponseTelemetryDataProps>('/');
+      const response = await appApiClient.get<ResponseTelemetryDataProps>("/");
       setTelemetryData(response.data.telemetryData);
     } catch (e) {
       console.error(e);
@@ -43,6 +35,12 @@ const Home = () => {
     fetchData();
   }, []);
 
+  const initialValue = [{
+    humidityHeight: 0.5,
+  }];
+
+  // panel form value
+  const [values, setValues] = useState(initialValue);
 
   const style = {
     display: "flex",
@@ -59,32 +57,48 @@ const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
+  useEffect(() => {
+    localStorage.setItem("humidityHeight", values[0].humidityHeight);
+  }, [values])
+
   return (
-    <div className='App' style={{ width: "100vw", height: "100vh" }}>
-      <div className='dragZone' style={{ width: "100vw", height: "100vh" }}>
+    <div className="App" style={{ width: "100vw", height: "100vh" }}>
+      <div className="dragZone" style={{ width: "100vw", height: "100vh" }}>
         <Box align="right">
-          <Button m='3' size="xs" onClick={toggle} sx={{ zIndex: 2 }} borderRadius="25px">
-            {isOpen ? "Close Tab" : "Open Tab"}
+          <Button
+            m="4"
+            size="xs"
+            onClick={toggle}
+            sx={{ zIndex: 2 }}
+            borderRadius="25px"
+          >
+            {isOpen ? "Close Panel" : "Open Panel"}
           </Button>
         </Box>
 
-        {isOpen &&
+        {/* floating panel */}
+
+        {JSON.stringify(values)}
+
+        {isOpen && (
           <Rnd
             style={style}
             default={{
               x: Math.floor(Math.random() * window.innerWidth) / 2,
               y: Math.floor(Math.random() * window.innerHeight) / 2,
-              width: window.innerWidth / 2,
-              height: window.innerHeight / 2,
+              width: window.innerWidth / 4,
+              height: window.innerHeight / 4,
             }}
             minWidth={300}
             minHeight={300}
+            maxHeight={window.innerHeight / 3}
+            maxWidth={window.innerWidth / 3}
             bounds={".dragZone"}
           >
             <Box w="100%">
-              <Tabs size='sm'>
+              <Tabs size="sm">
                 <TabList>
-                  <Tab>Current Data</Tab>
+                  <Tab>Device Data</Tab>
                   <Tab>Mockup Data</Tab>
                   <Tab>About</Tab>
                 </TabList>
@@ -96,22 +110,40 @@ const Home = () => {
                         array.length - 1 === index && (
                           <div key={index}>
                             <div>
-                              date: {telemetryItem.EventEnqueuedUtcTime.substring(0, 10)}
+                              date:{" "}
+                              {telemetryItem.EventEnqueuedUtcTime.substring(
+                                0,
+                                10
+                              )}
                             </div>
                             <div>
-                              time: {telemetryItem.EventEnqueuedUtcTime.substring(11, 19)}
+                              time:{" "}
+                              {telemetryItem.EventEnqueuedUtcTime.substring(
+                                11,
+                                19
+                              )}
                             </div>
                             <div>sitting time: {telemetryItem.sittingTime}</div>
                             <div>temperature: {telemetryItem.temperature}</div>
                             <div>humidity: {telemetryItem.humidity}</div>
-                            <div>dust concentration: {telemetryItem.dustConcentration}</div>
+                            <div>
+                              dust concentration:{" "}
+                              {telemetryItem.dustConcentration}
+                            </div>
                             <br />
                           </div>
-                        ))}
+                        )
+                    )}
                   </TabPanel>
                   <TabPanel>
                     <p>some mock up data</p>
-                    <Slider aria-label="slider-ex-1" defaultValue={30}>
+                    <Slider
+                      aria-label="slider-ex-1"
+                      defaultValue={30}
+                      onChange={(value) => {
+                        setValues([{ humidityHeight: value / 100 }]);
+                      }}
+                    >
                       <SliderTrack>
                         <SliderFilledTrack />
                       </SliderTrack>
@@ -125,7 +157,9 @@ const Home = () => {
               </Tabs>
             </Box>
           </Rnd>
-        }
+        )}
+
+        {/* floating panel end*/}
 
         <Container />
       </div>

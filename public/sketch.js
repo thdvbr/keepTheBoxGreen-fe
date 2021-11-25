@@ -44,6 +44,11 @@ function setup() {
 //wave constant
 let yoff = -1.0;
 
+// const humidityHeight = 0.5;
+const humidityHeight = localStorage.setItem("humidityHeight", 0.5);
+console.log(localStorage.getItem("humidityHeight"));
+
+
 function draw() {
 
   background("#008140");
@@ -76,7 +81,7 @@ function draw() {
     // let y = map(noise(xoff), 0, 1, 200, 300);
 
     // Set the vertex
-    vertex(x, y / 0.5);                                       // height of the wave
+    vertex(x, y / localStorage.getItem("humidityHeight"));                                       // height of the wave
     // Increment x dimension for noise
     xoff += 0.05;
   }

@@ -1,5 +1,5 @@
 //@ts-nocheck
-
+import { useState } from 'react';
 import { Box, Center } from '@chakra-ui/react';
 import ScriptTag from 'react-script-tag';
 
