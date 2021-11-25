@@ -20,7 +20,11 @@ function RainDrop(l, speed) {
 }
 
 function setup() {
-  createCanvas(window.innerWidth / 1.05, window.innerHeight / 2)
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  let cnv = createCanvas(width, height);
+  cnv.position(0, 0);
+
   layers = []
   for (i = 0; i < 7; i++) {
     layers[i] = []
@@ -33,7 +37,7 @@ function setup() {
 }
 
 function draw() {
-  background("#38A169")
+  background("#ffffff");
   for (i = 0; i < layers.length; i++) {
     for (ii = 0; ii < layers[i].length; ii++) {
       layers[i][ii].update()
