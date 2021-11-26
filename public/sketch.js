@@ -34,7 +34,7 @@ function createBall(speedX, speedY) {
   };
 }
 
-function processBall(b) {
+function processBall(b, particleNum) {
   // Process a ball, dealing with movement and bouncing
   b.x = b.x + b.speedX * b.dirX;
   b.y = b.y + b.speedY * b.dirY;
@@ -52,7 +52,7 @@ function processBall(b) {
   }
 
   fill(b.color, 10);
-  strokeWeight(b.weight);
+  strokeWeight(b.weight / 2);
   stroke(b.color);
   rect(b.x, b.y, b.size);
 }
@@ -67,11 +67,12 @@ function setup() {
 
   // particle
   ballList = [];
-  const particle = localStorage.getItem("particle");
+  // const particle = localStorage.getItem("particle");
   const ballNumber = Array.from(Array(500).keys())
   for (let i of ballNumber) {
     ballList.push(createBall());
   }
+
 
 }
 
@@ -121,7 +122,7 @@ function draw() {
   endShape(CLOSE);
 
   // particle
-
+  const particleNum = localStorage.getItem("particle");
   translate(width / 2, height / 2);
   for (let b of ballList) {
     processBall(b);
