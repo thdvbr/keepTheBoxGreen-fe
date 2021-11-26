@@ -132,7 +132,7 @@ function draw() {
     // let y = map(noise(xoff), 0, 1, 200, 300);
 
     // Set the vertex
-    vertex(x, y / localStorage.getItem("humidityHeight") * 2);                                       // height of the wave
+    vertex(x, y / localStorage.getItem("humidityHeight") * 1.5);                                       // height of the wave
     // Increment x dimension for noise
     xoff += 0.05;
   }
