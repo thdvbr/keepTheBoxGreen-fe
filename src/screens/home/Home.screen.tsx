@@ -45,7 +45,7 @@ const Home = () => {
   const initialValue = {
     humidityHeight: 0.5,
     temperature: 25,
-    particle: 200,
+    particle: 50,
   };
 
   // panel form value
@@ -176,6 +176,8 @@ const Home = () => {
                       <Slider
                         aria-label="slider-ex-1"
                         defaultValue={25}
+                        min={0}
+                        max={100}
                         onChange={(value) => {
                           setValues({ ...values, humidityHeight: value / 100 + 0.35 });
                         }}

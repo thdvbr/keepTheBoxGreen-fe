@@ -57,6 +57,42 @@ function processBall(b, particleNum) {
   rect(b.x, b.y, b.size);
 }
 
+let snowflakes = []; // array to hold snowflake objects
+
+// snowflake class
+function snowflake() {
+  // initialize coordinates
+  this.posX = 0;
+  this.posY = random(-50, 0);
+  this.initialangle = random(0, 2 * PI);
+  this.size = random(1, 2);
+
+  // radius of snowflake spiral
+  // chosen so the snowflakes are uniformly spread out in area
+  this.radius = sqrt(random(pow(width / 1, 2)));
+
+  this.update = function (time) {
+    // x position follows a circle
+    let w = 0.6; // angular speed
+    let angle = w * time + this.initialangle;
+    this.posX = width / 2 + this.radius * sin(angle);
+
+    // different size snowflakes fall at slightly different y speeds
+    this.posY += pow(this.size, 1);
+
+    // delete snowflake if past end of screen
+    if (this.posY > height) {
+      let index = snowflakes.indexOf(this);
+      snowflakes.splice(index, 1);
+    }
+  };
+
+  this.display = function () {
+    ellipse(this.posX, this.posY, this.size);
+  };
+}
+
+
 function setup() {
 
   // default canvas size
@@ -111,21 +147,33 @@ function draw() {
     // let y = map(noise(xoff), 0, 1, 200, 300);
 
     // Set the vertex
-    vertex(x, y / localStorage.getItem("humidityHeight"));                                       // height of the wave
+    vertex(x, y / localStorage.getItem("humidityHeight") * 2);                                       // height of the wave
     // Increment x dimension for noise
     xoff += 0.05;
   }
   // increment y dimension for noise
-  yoff += 0.025;
+  yoff += 0.015;
   vertex(width, height);
   vertex(0, height);
   endShape(CLOSE);
 
   // particle
   const particleNum = localStorage.getItem("particle");
-  translate(width / 2, height / 2);
-  for (let b of ballList) {
-    processBall(b);
+  // translate(width / 2, height / 2);
+  // for (let b of ballList) {
+  //   processBall(b);
+  // }
+
+  // snowflake
+  let t = frameCount / 60; // update time
+  // create a random number of snowflakes each frame
+  for (let i = 0; i < particleNum / 100; i++) {
+    snowflakes.push(new snowflake()); // append snowflake object
+  }
+  // loop through snowflakes with a for..of loop
+  for (let flake of snowflakes) {
+    flake.update(t / particleNum); // update snowflake position
+    flake.display(); // draw snowflake
   }
 
 }
