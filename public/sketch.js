@@ -19,6 +19,44 @@ function RainDrop(l, speed) {
   }
 }
 
+
+function createBall(speedX, speedY) {
+  return {
+    x: random(10),
+    y: random(10),
+    dirX: random(100),
+    dirY: random(100),
+    speedX: random(2),
+    speedY: random(2),
+    size: random(0, 1),
+    color: [0, 0, 0, random(255)],
+    weight: random(1, 10),
+  };
+}
+
+function processBall(b) {
+  // Process a ball, dealing with movement and bouncing
+  b.x = b.x + b.speedX * b.dirX;
+  b.y = b.y + b.speedY * b.dirY;
+
+  if (b.x > width / 2) {
+    b.dirX = -1;
+  } else if (b.x < -width / 2) {
+    b.dirX = 1;
+  }
+
+  if (b.y > height / 2) {
+    b.dirY = -1;
+  } else if (b.y < -height / 2) {
+    b.dirY = 1;
+  }
+
+  fill(b.color, 10);
+  strokeWeight(b.weight);
+  stroke(b.color);
+  rect(b.x, b.y, b.size);
+}
+
 function setup() {
 
   // default canvas size
@@ -27,16 +65,11 @@ function setup() {
   let cnv = createCanvas(width, height);
   cnv.position(0, 0);
 
-  // raindrops
-  layers = []
-  for (i = 0; i < 7; i++) {
-    layers[i] = []
-    for (ii = 0; ii < 300; ii++) {
-      rd = new RainDrop(2 * i, i + 1)
-      layers[i].push(rd)
-    }
+  ballList = [];
+  const ballNumber = Array.from(Array(200).keys())
+  for (let i of ballNumber) {
+    ballList.push(createBall());
   }
-  t += 0.001
 
 
 }
@@ -55,15 +88,16 @@ function draw() {
   // green (0,   255, 0, 255)
   // blue  (255, 255, 0, 255)
   //          255           255        255       
-  background(temp * 10 - 250, temp * 10, temp * 5 - 150, 255);
+  background((temp * 10 - 200), (temp * 5), (temp * 5 - 100), 255);
 
   // raindrops
-  for (i = 0; i < layers.length; i++) {
-    for (ii = 0; ii < layers[i].length; ii++) {
-      layers[i][ii].update()
-      layers[i][ii].show()
-    }
-  }
+  // for (i = 0; i < layers.length; i++) {
+  //   for (ii = 0; ii < layers[i].length; ii++) {
+  //     layers[i][ii].update()
+  //     layers[i][ii].show()
+  //   }
+  // }
+
   // wave
   // We are going to draw a polygon out of the wave points
   fill("#0000F7");
@@ -92,4 +126,11 @@ function draw() {
   vertex(width, height);
   vertex(0, height);
   endShape(CLOSE);
+
+  // particle
+  translate(width / 2, height / 2);
+  for (let b of ballList) {
+    processBall(b);
+  }
+
 }
