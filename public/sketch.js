@@ -59,7 +59,7 @@ function particle() {
     this.posX = width / 2 + this.radius * sin(angle);
 
     // different size particles fall at slightly different y speeds
-    this.posY += pow(this.size, 0.2);
+    this.posY += sin(this.size, 0.2);
 
     // delete particle if past end of screen
     if (this.posY > height) {
@@ -73,6 +73,9 @@ function particle() {
   };
 }
 
+function preload() {
+  img = loadImage('https://upload.wikimedia.org/wikipedia/commons/c/c2/Coronavirus_icon.svg')
+}
 
 function setup() {
 
@@ -89,6 +92,8 @@ function setup() {
   for (let i of ballNumber) {
     ballList.push(createBall());
   }
+
+  image(img, 10, 10, 50, 50);
 
 
 }
