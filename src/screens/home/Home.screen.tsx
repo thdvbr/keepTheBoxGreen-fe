@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import appApiClient from "../../api/appApiClient";
 import { TelemetryItemProps, ResponseTelemetryDataProps } from "../../types";
 import "../../App.css";
@@ -46,6 +46,7 @@ const Home = () => {
     humidityHeight: 0.5,
     temperature: 25,
     particle: 50,
+    sittingTime: 0,
   };
 
   // panel form value
@@ -70,7 +71,31 @@ const Home = () => {
     localStorage.setItem("humidityHeight", values.humidityHeight);
     localStorage.setItem("temperature", values.temperature);
     localStorage.setItem("particle", values.particle);
+    localStorage.setItem("sittingTime", values.sittingTime);
   }, [values])
+
+
+  // self incrementing sitting time
+  function useInterval(callback, delay) {
+    const savedCallback = useRef();
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
+    // Set up the interval
+    useEffect(() => {
+      let id = setInterval(() => {
+        savedCallback.current();
+      }, delay);
+      return () => clearInterval(id);
+    }, [delay]);
+  }
+
+  let [counter, setCounter] = useState(0);
+
+  useInterval(() => {
+    setCounter(counter + 1);
+    setValues({ ...values, sittingTime: counter })
+  }, 1000);
 
   return (
     <div className="App" style={{ width: "100vw", height: "100vh" }}>
@@ -86,6 +111,7 @@ const Home = () => {
             {isOpen ? "Close Panel" : "Open Panel"}
           </Button>
         </Box>
+
 
         {/* floating panel */}
 
@@ -218,6 +244,26 @@ const Home = () => {
                         max={500}
                         onChange={(value) => {
                           setValues({ ...values, particle: value });
+                        }}
+                      >
+                        <SliderTrack>
+                          <SliderFilledTrack />
+                        </SliderTrack>
+                        <SliderThumb />
+                      </Slider>
+                    </Box>
+
+                    {/* sitting time */}
+                    <Box>
+                      <p>Sitting Time: {values.sittingTime}</p>
+                      <Slider
+                        disabled
+                        aria-label="slider-ex-1"
+                        defaultValue={0}
+                        max={10}
+                        value={values.sittingTime}
+                        onChange={(value) => {
+                          setValues({ ...values, sittingTime: value });
                         }}
                       >
                         <SliderTrack>
