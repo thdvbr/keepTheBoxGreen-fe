@@ -44,6 +44,7 @@ let particles = []; // array to hold particle objects
 function preload() {
   covid = loadImage('/assets/covid.png');
   dust = loadImage('/assets/dust.png');
+  focus_image = loadImage('/assets/focus.png');
 }
 
 // particle class
@@ -150,8 +151,20 @@ function draw() {
   // sittingtime object
   fill(255, 255, 255, 255);
   const sittingTime = localStorage.getItem("sittingTime");
-  rectMode(CENTER);
-  rect(width / 2, height / 2, sittingTime * width / 75, sittingTime * height / 75);
+  // rectMode(CENTER);
+  imageMode(CENTER);
+  image(focus_image,
+    width / 2 + random(sittingTime), // x pos + shake
+    height / 2 + random(sittingTime), // y pos + shake
+    sittingTime * width / 75, // width
+    sittingTime * height / 75 // height
+  )
+  // rect(
+  //   width / 2 + random(sittingTime), // x pos + shake
+  //   height / 2 + random(sittingTime), // y pos + shake
+  //   sittingTime * width / 75, // width
+  //   sittingTime * height / 75 // height
+  // );
 
 
 }
