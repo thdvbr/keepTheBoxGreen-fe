@@ -42,9 +42,11 @@ let particles = []; // array to hold particle objects
 
 // load image
 function preload() {
+
   covid = loadImage('/assets/covid.png');
   dust = loadImage('/assets/dust.png');
   focus_image = loadImage('/assets/focus.png');
+  // focus_image = loadImage(monocleEmoji);
 }
 
 // particle class
@@ -71,16 +73,16 @@ function particle() {
     // delete particle if past end of screen
     if (this.posY > height) {
       let index = particles.indexOf(this);
-      particles.splice(index, random(400));
+      particles.splice(index, random(200));
     }
   };
 
-  this.display = function () {
+  this.covidDisplay = function () {
     image(covid, this.posX, this.posY)
     // rect(this.posX, this.posY, this.size);
   };
 
-  this.display2 = function () {
+  this.dustDisplay = function () {
     image(dust, this.posY, this.posX);
   };
 }
@@ -144,8 +146,8 @@ function draw() {
   // loop through particles with a for..of loop
   for (let particle of particles) {
     particle.update(t * particleNum / 100); // update particle position
-    particle.display(); // draw png
-    particle.display2(); // draw rect
+    particle.covidDisplay();
+    particle.dustDisplay();
   }
 
   // sittingtime object
@@ -154,9 +156,9 @@ function draw() {
   // rectMode(CENTER);
   imageMode(CENTER);
   image(focus_image,
-    width / 2 + random(sittingTime), // x pos + shake
-    height / 2 + random(sittingTime), // y pos + shake
-    sittingTime * width / 75, // width
-    sittingTime * width / 75 // height
+    width / 2 + random(sittingTime / 2), // x pos + shake
+    height / 2 + random(sittingTime / 2), // y pos + shake
+    sittingTime * width / 200, // width
+    sittingTime * width / 200 // height
   )
 }
