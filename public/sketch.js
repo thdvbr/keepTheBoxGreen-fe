@@ -40,17 +40,22 @@ function processBall(b, particleNum) {
 
 let particles = []; // array to hold particle objects
 
+// load image
+function preload() {
+  img = loadImage('/assets/covid.png');
+}
+
 // particle class
 function particle() {
   // initialize coordinates
   this.posX = 0;
-  this.posY = random(-50, 0);
+  this.posY = random(-500, 0);
   this.initialangle = random(0, 4 * PI);
-  this.size = random(5, 10);
+  this.size = random(0, 0.25);
 
   // radius of particle spiral
   // chosen so the particles are uniformly spread out in area
-  this.radius = sqrt(random(pow(width * 10 / 1, 2)));
+  this.radius = sqrt(random(pow(width * 2 / 1, 2)));
 
   this.update = function (time) {
     // x position follows a circle
@@ -64,17 +69,15 @@ function particle() {
     // delete particle if past end of screen
     if (this.posY > height) {
       let index = particles.indexOf(this);
-      particles.splice(index, 1);
+      particles.splice(index, random(200));
     }
   };
 
   this.display = function () {
-    rect(this.posX, this.posY, this.size);
+    // rect(this.posX, this.posY, this.size);
+    // imageMode(CENTER);
+    image(img, this.posX, this.posY)
   };
-}
-
-function preload() {
-  img = loadImage('https://upload.wikimedia.org/wikipedia/commons/c/c2/Coronavirus_icon.svg')
 }
 
 function setup() {
@@ -92,10 +95,6 @@ function setup() {
   for (let i of ballNumber) {
     ballList.push(createBall());
   }
-
-  image(img, 10, 10, 50, 50);
-
-
 }
 
 //wave constant
@@ -144,22 +143,17 @@ function draw() {
   endShape(CLOSE);
 
   // particle
-  fill(0, 0, 0, random(255));
+  // fill(0, 0, 0, random(255));
   const particleNum = localStorage.getItem("particle");
-  // translate(width / 2, height / 2);
-  // for (let b of ballList) {
-  //   processBall(b);
-  // }
 
-  let t = frameCount / 60; // update time
+  let t = frameCount / 6000; // update time
   // create a random number of particle each frame
-  for (let i = 0; i < particleNum / 100; i++) {
-    particles.push(new particle()); // append particle object
+  for (let i = 0; i < particleNum / 1000; i++) {
+    particles.push(new particle())  // append particle object
   }
   // loop through particles with a for..of loop
   for (let particle of particles) {
-    particle.update(t / particleNum); // update particle position
+    particle.update(t); // update particle position
     particle.display(); // draw particle
   }
-
 }
