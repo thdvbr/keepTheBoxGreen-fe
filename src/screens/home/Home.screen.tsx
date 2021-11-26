@@ -43,9 +43,10 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const initialValue = [{
+  const initialValue = {
     humidityHeight: 0.5,
-  }];
+    temperature: 25,
+  };
 
   // panel form value
   const [values, setValues] = useState(initialValue);
@@ -66,7 +67,8 @@ const Home = () => {
   const toggle = () => setIsOpen(!isOpen);
 
   useEffect(() => {
-    localStorage.setItem("humidityHeight", values[0].humidityHeight);
+    localStorage.setItem("humidityHeight", values.humidityHeight);
+    localStorage.setItem("temperature", values.temperature);
   }, [values])
 
   return (
@@ -162,36 +164,19 @@ const Home = () => {
 
                               </Tbody>
                             </Table>
-                            {/* <div>
-                              date:{" "}
-                              {telemetryItem.EventEnqueuedUtcTime.substring(
-                                0,
-                                10
-                              )}
-                            </div>
-                            <div>
-                              time:{telemetryItem.EventEnqueuedUtcTime.substring(11, 19)}
-                            </div>
-                            <div>sitting time: {telemetryItem.sittingTime}</div>
-                            <div>temperature: {telemetryItem.temperature}</div>
-                            <div>humidity: {telemetryItem.humidity}</div>
-                            <div>
-                              dust concentration:{" "}
-                              {telemetryItem.dustConcentration}
-                            </div>
-                            <br /> */}
                           </div>
                         )
                     )}
                   </TabPanel>
                   <TabPanel>
+                    {/* humidity */}
                     <Box>
-                      <p>humidity: </p>
+                      <p>Humidity: {values.humidityHeight * 100 - 35}%</p>
                       <Slider
                         aria-label="slider-ex-1"
-                        defaultValue={30}
+                        defaultValue={25}
                         onChange={(value) => {
-                          setValues([{ humidityHeight: value / 100 + 0.35 }]);
+                          setValues({ ...values, humidityHeight: value / 100 + 0.35 });
                         }}
                       >
                         <SliderTrack>
@@ -200,6 +185,26 @@ const Home = () => {
                         <SliderThumb />
                       </Slider>
                     </Box>
+
+                    {/* temperature */}
+                    <Box>
+                      <p>Temperature: {values.temperature}°</p>
+                      <Slider
+                        aria-label="slider-ex-1"
+                        defaultValue={25}
+                        min={0}
+                        max={50}
+                        onChange={(value) => {
+                          setValues({ ...values, temperature: value });
+                        }}
+                      >
+                        <SliderTrack>
+                          <SliderFilledTrack />
+                        </SliderTrack>
+                        <SliderThumb />
+                      </Slider>
+                    </Box>
+
                   </TabPanel>
                   <TabPanel>
                     <p>okja is cute dog</p>

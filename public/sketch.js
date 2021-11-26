@@ -46,12 +46,16 @@ let yoff = -1.0;
 
 // const humidityHeight = 0.5;
 const humidityHeight = localStorage.setItem("humidityHeight", 0.5);
-console.log(localStorage.getItem("humidityHeight"));
-
 
 function draw() {
 
-  background("#008140");
+  let temp = localStorage.getItem("temperature") // 25
+
+  // red   (255, 0,   0, 255)
+  // green (0,   255, 0, 255)
+  // blue  (255, 255, 0, 255)
+  //          255           255        255       
+  background(temp * 10 - 250, temp * 10, temp * 5 - 150, 255);
 
   // raindrops
   for (i = 0; i < layers.length; i++) {
@@ -60,10 +64,8 @@ function draw() {
       layers[i][ii].show()
     }
   }
-
   // wave
   // We are going to draw a polygon out of the wave points
-
   fill("#0000F7");
   beginShape();
 
