@@ -92,13 +92,6 @@ function setup() {
   let cnv = createCanvas(width, height);
   cnv.position(0, 0);
 
-  // particle
-  // ballList = [];
-  // const particle = localStorage.getItem("particle");
-  // const ballNumber = Array.from(Array(10).keys())                         // static particle num
-  // for (let i of ballNumber) {
-  //   ballList.push(createBall());
-  // }
 }
 
 //wave constant
@@ -108,7 +101,6 @@ let yoff = -1.0;
 const humidityHeight = localStorage.setItem("humidityHeight", 0.5);
 
 function draw() {
-
   let temp = localStorage.getItem("temperature") // 25
 
   // red   (255, 0,   0, 255)
@@ -154,4 +146,12 @@ function draw() {
     particle.display(); // draw png
     particle.display2(); // draw rect
   }
+
+
+
+
+
+
+
+
 }
