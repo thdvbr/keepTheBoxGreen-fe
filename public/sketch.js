@@ -52,7 +52,7 @@ function particle() {
   // initialize coordinates
   this.posX = 0;
   this.posY = random(-500, 0);
-  this.initialangle = random(0, 40 * PI);
+  this.initialangle = random(0, 4 * PI);
   this.size = random(0, 10);                                       // speed of particle somehow?
 
   // radius of particle spiral
@@ -157,14 +157,6 @@ function draw() {
     width / 2 + random(sittingTime), // x pos + shake
     height / 2 + random(sittingTime), // y pos + shake
     sittingTime * width / 75, // width
-    sittingTime * height / 75 // height
+    sittingTime * width / 75 // height
   )
-  // rect(
-  //   width / 2 + random(sittingTime), // x pos + shake
-  //   height / 2 + random(sittingTime), // y pos + shake
-  //   sittingTime * width / 75, // width
-  //   sittingTime * height / 75 // height
-  // );
-
-
 }
