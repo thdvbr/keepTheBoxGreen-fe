@@ -21,7 +21,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -46,6 +45,7 @@ const Home = () => {
   const initialValue = {
     humidityHeight: 0.5,
     temperature: 25,
+    particle: 200,
   };
 
   // panel form value
@@ -69,6 +69,7 @@ const Home = () => {
   useEffect(() => {
     localStorage.setItem("humidityHeight", values.humidityHeight);
     localStorage.setItem("temperature", values.temperature);
+    localStorage.setItem("particle", values.particle);
   }, [values])
 
   return (
@@ -196,6 +197,25 @@ const Home = () => {
                         max={50}
                         onChange={(value) => {
                           setValues({ ...values, temperature: value });
+                        }}
+                      >
+                        <SliderTrack>
+                          <SliderFilledTrack />
+                        </SliderTrack>
+                        <SliderThumb />
+                      </Slider>
+                    </Box>
+
+                    {/* particle */}
+                    <Box>
+                      <p>Dust Level: {values.particle}μg/㎥</p>
+                      <Slider
+                        aria-label="slider-ex-1"
+                        defaultValue={50}
+                        min={0}
+                        max={500}
+                        onChange={(value) => {
+                          setValues({ ...values, particle: value });
                         }}
                       >
                         <SliderTrack>

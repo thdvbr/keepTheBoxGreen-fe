@@ -65,12 +65,13 @@ function setup() {
   let cnv = createCanvas(width, height);
   cnv.position(0, 0);
 
+  // particle
   ballList = [];
-  const ballNumber = Array.from(Array(200).keys())
+  const particle = localStorage.getItem("particle");
+  const ballNumber = Array.from(Array(500).keys())
   for (let i of ballNumber) {
     ballList.push(createBall());
   }
-
 
 }
 
@@ -89,14 +90,6 @@ function draw() {
   // blue  (255, 255, 0, 255)
   //          255           255        255       
   background((temp * 10 - 200), (temp * 5), (temp * 5 - 100), 255);
-
-  // raindrops
-  // for (i = 0; i < layers.length; i++) {
-  //   for (ii = 0; ii < layers[i].length; ii++) {
-  //     layers[i][ii].update()
-  //     layers[i][ii].show()
-  //   }
-  // }
 
   // wave
   // We are going to draw a polygon out of the wave points
@@ -128,6 +121,7 @@ function draw() {
   endShape(CLOSE);
 
   // particle
+
   translate(width / 2, height / 2);
   for (let b of ballList) {
     processBall(b);
