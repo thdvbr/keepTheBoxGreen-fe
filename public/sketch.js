@@ -42,7 +42,8 @@ let particles = []; // array to hold particle objects
 
 // load image
 function preload() {
-  img = loadImage('/assets/covid.png');
+  covid = loadImage('/assets/covid.png');
+  dust = loadImage('/assets/dust.png');
 }
 
 // particle class
@@ -50,12 +51,12 @@ function particle() {
   // initialize coordinates
   this.posX = 0;
   this.posY = random(-500, 0);
-  this.initialangle = random(0, 4 * PI);
-  this.size = random(0, 0.25);
+  this.initialangle = random(0, 40 * PI);
+  this.size = random(0, 10);                                       // speed of particle somehow?
 
   // radius of particle spiral
   // chosen so the particles are uniformly spread out in area
-  this.radius = sqrt(random(pow(width * 2 / 1, 2)));
+  this.radius = sqrt(random(pow(width * 20 / 1, 2)));
 
   this.update = function (time) {
     // x position follows a circle
@@ -64,19 +65,22 @@ function particle() {
     this.posX = width / 2 + this.radius * sin(angle);
 
     // different size particles fall at slightly different y speeds
-    this.posY += sin(this.size, 0.2);
+    this.posY += sin(this.size, 2);
 
     // delete particle if past end of screen
     if (this.posY > height) {
       let index = particles.indexOf(this);
-      particles.splice(index, random(200));
+      particles.splice(index, random(400));
     }
   };
 
   this.display = function () {
+    image(covid, this.posX, this.posY)
     // rect(this.posX, this.posY, this.size);
-    // imageMode(CENTER);
-    image(img, this.posX, this.posY)
+  };
+
+  this.display2 = function () {
+    image(dust, this.posY, this.posX);
   };
 }
 
@@ -89,12 +93,12 @@ function setup() {
   cnv.position(0, 0);
 
   // particle
-  ballList = [];
+  // ballList = [];
   // const particle = localStorage.getItem("particle");
-  const ballNumber = Array.from(Array(500).keys())
-  for (let i of ballNumber) {
-    ballList.push(createBall());
-  }
+  // const ballNumber = Array.from(Array(10).keys())                         // static particle num
+  // for (let i of ballNumber) {
+  //   ballList.push(createBall());
+  // }
 }
 
 //wave constant
@@ -117,20 +121,13 @@ function draw() {
   // We are going to draw a polygon out of the wave points
   fill("#0000F7");
   beginShape();
-
   let xoff = 0; // Option #1: 2D Noise
   // let xoff = yoff; // Option #2: 1D Noise
-
   // Iterate over horizontal pixels
   for (let x = 0; x <= width; x += 10) {
     // Calculate a y value according to noise, map to
-
     // Option #1: 2D Noise
     let y = map(noise(xoff, yoff), 0, 1, 200, 250);
-
-    // Option #2: 1D Noise
-    // let y = map(noise(xoff), 0, 1, 200, 300);
-
     // Set the vertex
     vertex(x, y / localStorage.getItem("humidityHeight") * 1.5);                                       // height of the wave
     // Increment x dimension for noise
@@ -148,12 +145,13 @@ function draw() {
 
   let t = frameCount / 6000; // update time
   // create a random number of particle each frame
-  for (let i = 0; i < particleNum / 1000; i++) {
+  for (let i = 0; i < particleNum / 100; i++) {
     particles.push(new particle())  // append particle object
   }
   // loop through particles with a for..of loop
   for (let particle of particles) {
-    particle.update(t); // update particle position
-    particle.display(); // draw particle
+    particle.update(t * particleNum / 100); // update particle position
+    particle.display(); // draw png
+    particle.display2(); // draw rect
   }
 }
