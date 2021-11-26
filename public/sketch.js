@@ -147,11 +147,11 @@ function draw() {
     particle.display2(); // draw rect
   }
 
-
-
-
-
-
+  // sittingtime object
+  fill(255, 255, 255, 255);
+  const sittingTime = localStorage.getItem("sittingTime");
+  rectMode(CENTER);
+  rect(width / 2, height / 2, sittingTime * width / 75, sittingTime * height / 75);
 
 
 }

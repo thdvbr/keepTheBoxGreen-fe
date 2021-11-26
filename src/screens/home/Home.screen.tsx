@@ -91,9 +91,17 @@ const Home = () => {
   }
 
   let [counter, setCounter] = useState(0);
+  const count = () => {
+    // reset at 60
+    if (counter < 60) {
+      return counter + 2
+    } else {
+      return counter = 0
+    }
+  }
 
   useInterval(() => {
-    setCounter(counter + 1);
+    setCounter(count);
     setValues({ ...values, sittingTime: counter })
   }, 1000);
 
@@ -260,7 +268,7 @@ const Home = () => {
                         disabled
                         aria-label="slider-ex-1"
                         defaultValue={0}
-                        max={10}
+                        max={60}
                         value={values.sittingTime}
                         onChange={(value) => {
                           setValues({ ...values, sittingTime: value });
