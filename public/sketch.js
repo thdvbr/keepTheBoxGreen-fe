@@ -1,24 +1,5 @@
-var t = 0
-function RainDrop(l, speed) {
-  this.l = l
-  this.speed = speed
-  this.x = random(0, width)
-  this.y = random(0, height)
-  this.update = function () {
-    this.y += this.speed
-    this.x += noise(t)
-    if (this.y >= height) {
-      this.y = 0
-    }
-    if (this.x >= width) {
-      this.x = 0
-    }
-  }
-  this.show = function () {
-    line(this.x, this.y, this.x, this.y - l)
-  }
-}
-
+// time counter
+let t = 0
 
 function createBall(speedX, speedY) {
   return {
@@ -57,38 +38,38 @@ function processBall(b, particleNum) {
   rect(b.x, b.y, b.size);
 }
 
-let snowflakes = []; // array to hold snowflake objects
+let particles = []; // array to hold particle objects
 
-// snowflake class
-function snowflake() {
+// particle class
+function particle() {
   // initialize coordinates
   this.posX = 0;
   this.posY = random(-50, 0);
-  this.initialangle = random(0, 2 * PI);
-  this.size = random(1, 2);
+  this.initialangle = random(0, 4 * PI);
+  this.size = random(5, 10);
 
-  // radius of snowflake spiral
-  // chosen so the snowflakes are uniformly spread out in area
-  this.radius = sqrt(random(pow(width / 1, 2)));
+  // radius of particle spiral
+  // chosen so the particles are uniformly spread out in area
+  this.radius = sqrt(random(pow(width * 10 / 1, 2)));
 
   this.update = function (time) {
     // x position follows a circle
-    let w = 0.6; // angular speed
+    let w = 0.5; // angular speed
     let angle = w * time + this.initialangle;
     this.posX = width / 2 + this.radius * sin(angle);
 
-    // different size snowflakes fall at slightly different y speeds
-    this.posY += pow(this.size, 1);
+    // different size particles fall at slightly different y speeds
+    this.posY += pow(this.size, 0.2);
 
-    // delete snowflake if past end of screen
+    // delete particle if past end of screen
     if (this.posY > height) {
-      let index = snowflakes.indexOf(this);
-      snowflakes.splice(index, 1);
+      let index = particles.indexOf(this);
+      particles.splice(index, 1);
     }
   };
 
   this.display = function () {
-    ellipse(this.posX, this.posY, this.size);
+    rect(this.posX, this.posY, this.size);
   };
 }
 
@@ -158,22 +139,22 @@ function draw() {
   endShape(CLOSE);
 
   // particle
+  fill(0, 0, 0, random(255));
   const particleNum = localStorage.getItem("particle");
   // translate(width / 2, height / 2);
   // for (let b of ballList) {
   //   processBall(b);
   // }
 
-  // snowflake
   let t = frameCount / 60; // update time
-  // create a random number of snowflakes each frame
+  // create a random number of particle each frame
   for (let i = 0; i < particleNum / 100; i++) {
-    snowflakes.push(new snowflake()); // append snowflake object
+    particles.push(new particle()); // append particle object
   }
-  // loop through snowflakes with a for..of loop
-  for (let flake of snowflakes) {
-    flake.update(t / particleNum); // update snowflake position
-    flake.display(); // draw snowflake
+  // loop through particles with a for..of loop
+  for (let particle of particles) {
+    particle.update(t / particleNum); // update particle position
+    particle.display(); // draw particle
   }
 
 }
