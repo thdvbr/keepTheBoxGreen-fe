@@ -1,164 +1,82 @@
-// time counter
-let t = 0
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+let angle = 0;
 
-function createBall(speedX, speedY) {
-  return {
-    x: random(10),
-    y: random(10),
-    dirX: random(100),
-    dirY: random(100),
-    speedX: random(2),
-    speedY: random(2),
-    size: random(0, 1),
-    color: [0, 0, 0, random(255)],
-    weight: random(1, 10),
-  };
-}
+let poop;
+let cam;
+let numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+  10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+  20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
 
-function processBall(b, particleNum) {
-  // Process a ball, dealing with movement and bouncing
-  b.x = b.x + b.speedX * b.dirX;
-  b.y = b.y + b.speedY * b.dirY;
-
-  if (b.x > width / 2) {
-    b.dirX = -1;
-  } else if (b.x < -width / 2) {
-    b.dirX = 1;
-  }
-
-  if (b.y > height / 2) {
-    b.dirY = -1;
-  } else if (b.y < -height / 2) {
-    b.dirY = 1;
-  }
-
-  fill(b.color, 10);
-  strokeWeight(b.weight / 2);
-  stroke(b.color);
-  rect(b.x, b.y, b.size);
-}
-
-let particles = []; // array to hold particle objects
-
-// load image
 function preload() {
-
-  covid = loadImage('/assets/covid.png');
-  dust = loadImage('/assets/dust.png');
-  focus_image = loadImage('/assets/focus.png');
-  // focus_image = loadImage(monocleEmoji);
+  poop = loadImage("/assets/poop-emoji.jpg");
 }
 
-// particle class
-function particle() {
-  // initialize coordinates
-  this.posX = 0;
-  this.posY = random(-500, 0);
-  this.initialangle = random(0, 4 * PI);
-  this.size = random(0, 10);                                       // speed of particle somehow?
-
-  // radius of particle spiral
-  // chosen so the particles are uniformly spread out in area
-  this.radius = sqrt(random(pow(width * 20 / 1, 2)));
-
-  this.update = function (time) {
-    // x position follows a circle
-    let w = 0.5; // angular speed
-    let angle = w * time + this.initialangle;
-    this.posX = width / 2 + this.radius * sin(angle);
-
-    // different size particles fall at slightly different y speeds
-    this.posY += sin(this.size, 2);
-
-    // delete particle if past end of screen
-    if (this.posY > height) {
-      let index = particles.indexOf(this);
-      particles.splice(index, random(200));
-    }
-  };
-
-  this.covidDisplay = function () {
-    image(covid, this.posX, this.posY)
-    // rect(this.posX, this.posY, this.size);
-  };
-
-  this.dustDisplay = function () {
-    image(dust, this.posY, this.posX);
-  };
-}
 
 function setup() {
-
   // default canvas size
   const width = window.innerWidth;
   const height = window.innerHeight;
-  let cnv = createCanvas(width, height);
+  let cnv = createCanvas(width, height, WEBGL);
   cnv.position(0, 0);
-
+  cam = createCapture(VIDEO);
 }
 
-//wave constant
-let yoff = -1.0;
-
-// const humidityHeight = 0.5;
-const humidityHeight = localStorage.setItem("humidityHeight", 0.5);
-
 function draw() {
-  let temp = localStorage.getItem("temperature") // 25
+  background(175);
+  rectMode(CENTER);
+  noStroke();
+  
+  push();
+  // mouseX - CENTER OF THE WINDOW
+  let dx = mouseX - width / 2;
+  let dy = mouseY - height / 2;
+  let v = createVector(dx, dy, 0);
+  v.normalize();
+  // ambient Material reflects light 
+  // ambientLight(0, 0, 255);
+  // pointLight(255, 255, 0, -200, 0, 0);
+  // directionalLight(255, 255, 0, dx, dy, 0);
 
-  // red   (255, 0,   0, 255)
-  // green (0,   255, 0, 255)
-  // blue  (255, 255, 0, 255)
-  //          255           255        255       
-  background((temp * 10 - 200), (temp * 5), (temp * 5 - 100), 255);
-
-  // wave
-  // We are going to draw a polygon out of the wave points
-  fill("#0000F7");
-  beginShape();
-  let xoff = 0; // Option #1: 2D Noise
-  // let xoff = yoff; // Option #2: 1D Noise
-  // Iterate over horizontal pixels
-  for (let x = 0; x <= width; x += 10) {
-    // Calculate a y value according to noise, map to
-    // Option #1: 2D Noise
-    let y = map(noise(xoff, yoff), 0, 1, 200, 250);
-    // Set the vertex
-    vertex(x, y / localStorage.getItem("humidityHeight") * 1.5);                                       // height of the wave
-    // Increment x dimension for noise
-    xoff += 0.05;
-  }
-  // increment y dimension for noise
-  yoff += 0.015;
-  vertex(width, height);
-  vertex(0, height);
-  endShape(CLOSE);
-
-  // particle
-  // fill(0, 0, 0, random(255));
-  const particleNum = localStorage.getItem("particle");
-
-  let t = frameCount / 6000; // update time
-  // create a random number of particle each frame
-  for (let i = 0; i < particleNum / 100; i++) {
-    particles.push(new particle())  // append particle object
-  }
-  // loop through particles with a for..of loop
-  for (let particle of particles) {
-    particle.update(t * particleNum / 100); // update particle position
-    particle.covidDisplay();
-    particle.dustDisplay();
-  }
-
-  // sittingtime object
-  fill(255, 255, 255, 255);
+  // ambient light and directional light mixes with each other and blue from ambient light
+  // and yellow and green from directional light becomes white on blue 
   const sittingTime = localStorage.getItem("sittingTime");
-  // rectMode(CENTER);
-  imageMode(CENTER);
-  image(focus_image,
-    width / 2 + random(sittingTime / 2), // x pos + shake
-    height / 2 + random(sittingTime / 2), // y pos + shake
-    sittingTime * width / 200, // width
-    sittingTime * width / 200 // height
-  )
+  ambientLight(sittingTime * 10, 255 - sittingTime * 3, 0);
+  directionalLight(0, 0 , sittingTime * 10 + 50, v);
+  // pointLight(sittingTime * 10 , 0, 0, 200 - sittingTime * 5, 255, 0);
+ 
+  // normalMaterial();
+  // functions run sequential
+  // translate(mouseX - width/2 , mouseY - height/2);
+
+  // use mouseX to translate along Z 
+  translate(mouseX - width / 2, mouseY - height / 2, 0);
+  rotateZ(angle);
+  rotateY(angle * 0.5);
+  rotateX(mouseX * 0.01 );
+  // rect(0, 0, 150, 150);
+  // width, height, depth
+  
+  // box(100, 20, 50);
+  sphere(sittingTime * 7);
+  // ambientMaterial(255);
+  texture(cam);
+  pop();
+  push();
+  // sphere(100);
+
+  angle += 0.03;
+
+  translate(240, 0, 0);
+
+  rotateZ(frameCount * 0.01);
+  rotateX(frameCount * 0.01);
+  rotateY(frameCount * 0.01);
+  // cylinder(70, 70);
+  texture(poop);
+  box(50, 50);
+  pop();
+
+
+
 }
